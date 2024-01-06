@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="main.js"></script>
+    <script src="main1.js"></script>
+    <title>main</title>
+</head>
+<body>
+    <div class="body">
+        <div class="main-box" id="data-container"> <!-- 添加一個 ID，用於插入動態生成的內容 -->
+            
+        </div>
+        <div class="side-box top"></div>
+        <div class="side-box bottom"></div>
+    </div>
+    <div class="dropdown">
+            <img src="UserIcon.jpg" alt="Menu Icon">
+        <div class="dropdown-content">
+            <a href="#">Profile</a>
+            <a href="#">Log out</a>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            fetch('main.php')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('data-container');
+                    data.forEach(item => {
+                        const jobContainer = document.createElement('div');
+                        jobContainer.className = 'job-container';
+
+                        const heading = document.createElement('h3');
+                        heading.textContent = item.position;
+
+                        const institution = document.createElement('p');
+                        institution.textContent = item.institution;
+
+                        const description = document.createElement('p');
+                        description.textContent = item.dscrpt;
+
+                        const jobDetails = document.createElement('div');
+                        jobDetails.className = 'job-details';
+
+                        const startDate = document.createElement('p');
+                        startDate.textContent = 'Start Date: ' + item.start_date;
+
+                        const days = document.createElement('p');
+                        days.textContent = 'Days: ' + item.days;
+
+                        const salaryPer = document.createElement('p');
+                        salaryPer.textContent = 'Salary/Per: ' + item.salary + '/' + item.per;
+
+                        const numPeople = document.createElement('p');
+                        numPeople.textContent = 'Number of People: ' + item.num_ppl;
+
+                        const applyButton = document.createElement('button');
+                        applyButton.className = 'apply-button';
+                        applyButton.textContent = 'Apply';
+
+                        jobDetails.appendChild(startDate);
+                        jobDetails.appendChild(days);
+                        jobDetails.appendChild(salaryPer);
+                        jobDetails.appendChild(numPeople);
+
+                        jobContainer.appendChild(heading);
+                        jobContainer.appendChild(institution);
+                        jobContainer.appendChild(description);
+                        jobContainer.appendChild(jobDetails);
+                        jobContainer.appendChild(applyButton);
+
+                        container.appendChild(jobContainer);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        };
+    </script>
+    <div class="feedback-box">
+        <input type="text" placeholder="Enter your feedback...">
+        <button type="button" id="submitBtn">Submit</button>
+    </div>
+</body>
+</html>
